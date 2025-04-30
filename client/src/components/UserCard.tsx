@@ -4,8 +4,6 @@ import { IUser } from "../interface/IUser";
 import { Pagination } from "./Pagination";
 import { useDebounce } from "../hooks/useDebounce";
 
-
-
 const UserCard = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -14,15 +12,13 @@ const UserCard = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [totalCount, setTotalCount] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
-  const [searchQuery, setSearchQuery] = useState<string>('')
-  const debouncedSearch = useDebounce(searchQuery, 1000)
-
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const debouncedSearch = useDebounce(searchQuery, 1000);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setPage(1);
   };
-
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -79,7 +75,12 @@ const UserCard = () => {
                 >
                   <div
                     className="card"
-                    style={{ width: "17rem", padding: 0, marginBottom: "1rem" }}
+                    style={{
+                      width: "17rem",
+                      padding: 4,
+                      marginBottom: "1rem",
+                      backgroundColor: "#f6f6f6",
+                    }}
                   >
                     <img
                       src="./prof.webp"

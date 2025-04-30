@@ -1,13 +1,12 @@
-import './App.css'
-import UserCard from './components/UserCard'
+import "./App.css";
+import UserCard from "./components/UserCard";
 
 function App() {
-
   return (
     <>
-        <UserCard />
+      <UserCard />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
