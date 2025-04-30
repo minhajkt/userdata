@@ -10,6 +10,8 @@ export class UserService implements IUserService {
             'https://jsonplaceholder.org/users'
             );
 
+            const totalCount = response.data.length
+
             const startIndex = (page - 1 ) * limit
             const endIndex = page * limit
 
@@ -21,7 +23,15 @@ export class UserService implements IUserService {
               phone: user.phone,
             }));
 
-            return users.slice(startIndex, endIndex)
+            const paginatedUsers = users.slice(startIndex, endIndex)
+
+            const totalPages = Math.ceil(totalCount / limit)
+
+            return {
+                users: paginatedUsers,
+                totalPages,
+                totalCount
+            }
         } catch (error) {
             throw new Error(`Failed to fetch the users list ${(error as Error).message}`)
         }
