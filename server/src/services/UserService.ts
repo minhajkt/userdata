@@ -1,39 +1,39 @@
 import { IUser } from "../interface/user";
 import { IUserService } from "./IUserService";
-import axios from 'axios'
+import axios from "axios";
 
 export class UserService implements IUserService {
-    async getUsers(page: number, limit: number) {
-        try {
-            const response = await axios(
-            //   "https://jsonplaceholder.typicode.com/users"
-            'https://jsonplaceholder.org/users'
-            );
+  async getUsers(page: number, limit: number, searchQuery: string) {
+    try {
+      const response = await axios("https://jsonplaceholder.org/users");
+      const allUsers: IUser[] = response.data;
 
-            const totalCount = response.data.length
+      const lowerSearch = searchQuery.toLowerCase();
+      const filteredUsers = allUsers.filter(
+        (user: IUser) =>
+          user.firstname.toLowerCase().includes(lowerSearch) ||
+          user.lastname.toLowerCase().includes(lowerSearch) ||
+          user.email.toLowerCase().includes(lowerSearch) ||
+          user.phone.toLowerCase().includes(lowerSearch)
+      );
 
-            const startIndex = (page - 1 ) * limit
-            const endIndex = page * limit
+      const totalCount = filteredUsers.length;
+      const totalPages = Math.ceil(totalCount / limit);
+      const startIndex = (page - 1) * limit;
+      const paginatedUsers = filteredUsers.slice(
+        startIndex,
+        startIndex + limit
+      );
 
-            const users = response.data.map((user: IUser) => ({
-              id: user.id,
-              name: user.firstname + ' ' + user.lastname,
-              // name: user.name,
-              email: user.email,
-              phone: user.phone,
-            }));
-
-            const paginatedUsers = users.slice(startIndex, endIndex)
-
-            const totalPages = Math.ceil(totalCount / limit)
-
-            return {
-                users: paginatedUsers,
-                totalPages,
-                totalCount
-            }
-        } catch (error) {
-            throw new Error(`Failed to fetch the users list ${(error as Error).message}`)
-        }
+      return {
+        users: paginatedUsers,
+        totalPages,
+        totalCount,
+      };
+    } catch (error) {
+      throw new Error(
+        `Failed to fetch the users list: ${(error as Error).message}`
+      );
     }
+  }
 }

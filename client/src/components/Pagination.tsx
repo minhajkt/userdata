@@ -4,7 +4,7 @@ export const Pagination = ({totalPages, currentPage, onPageChange}:IPagination) 
   const pageNumbers = [...Array(totalPages)].map((_, index) => index + 1);
 
     return(
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" className="d-flex justify-content-center">
       <ul className="pagination">
         <li className="page-item">
           <button
